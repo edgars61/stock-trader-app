@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
         img{
-            width: 100%;
-            height: 100%;
+            width: 60%;
+            height: 60%;
         }
     </style>
     <title>Hello, world!</title>
@@ -21,9 +21,13 @@
   <body>
       <div class="row">
       <div class="col-lg-8">
-        <input type="text">
         {% load static %}
         <img src="{% static "trading/foo.png" %}" alt="My image"/>
+        <h2>{{extracted.range}}</h2>
+        <h2>{{extracted.beta}}</h2>
+        <h2>{{extracted.cusip}}</h2>
+        <h3>hello world</h3>
+        
             
       </div>
       <div class="col-lg-6">
