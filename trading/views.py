@@ -16,7 +16,8 @@ import json
 
 
 def home(request):
-    if request.method =='POST':
+    if request.method =='POST' and request.POST['ticker']:
+        
         ticker = request.POST['ticker']
         ticker = ticker.replace(" ", "")
         try:
@@ -48,23 +49,28 @@ def home(request):
         if  json_response:
             extracted = json_response[0]
             ticker = extracted["symbol"]
-            df= get_data(ticker, start_date="12/04/2009", end_date="12/04/2019", index_as_date = True, interval="1wk")
+            df= get_data(ticker, start_date="10/11/2015", end_date="10/11/2020", index_as_date = True, interval="1wk")
             df['close'].plot()
             plt.figure(figsize=(10,10))
             plt.plot(df.index, df['close'])
             plt.xlabel("date")
             plt.ylabel("$ price")
-            plt.title(ticker+ " Stock Price 1/1/17 - 8/1/19")
+            plt.title(ticker+ " Stock Price 10/11/15  - 10/11/20")
             plt.savefig("trading/static/trading/foo.png")
+            return render(request,'home.html',{'extracted':extracted})
             
             
             
         else:
-            extracted = "There was an error with your ticker please try again."
+            ticker = "There was an error with your ticker please try again."
+            return render(request,'home.html',{'ticker':ticker})
     else:
-        extracted = "Please enter a valid stock"
+        ticker = "Please enter a valid stock ticker above"
+        return render(request,'home.html',{'ticker':ticker})
+        
+    
        
-    return render(request,'home.html',{'extracted':extracted})
+    
         
         
     
