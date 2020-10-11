@@ -18,6 +18,7 @@ import json
 def home(request):
     if request.method =='POST':
         ticker = request.POST['ticker']
+        ticker = ticker.replace(" ", "")
         try:
             # For Python 3.0 and later
             from urllib.request import urlopen
@@ -61,9 +62,9 @@ def home(request):
         else:
             extracted = "There was an error with your ticker please try again."
     else:
-        extracted = "gay porn"
+        extracted = "Please enter a valid stock"
        
-    return render(request,'home_1.html',{'extracted':extracted})
+    return render(request,'home.html',{'extracted':extracted})
         
         
     
@@ -71,5 +72,6 @@ def home(request):
 
     
     
-
+def about(request):
+    return render(request,'about.html',{})
     
