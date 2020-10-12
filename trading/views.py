@@ -87,22 +87,56 @@ def home(request):
                     if found:
                         stocks[counter].quantity += 1
                         stocks[counter].save()
-                        status = "Stock succesfully purchased"
+                        status = "ok_purch"
                     if found == False:
                         n = Stock(ticker = stockname,quantity=1)
                         n.save()
-                        status = "Stock successfuly purchased"
+                        status = "ok_purch"
                     userinformation[0].balance -= extracted["price"]
                     userinformation[0].save()
                 else:
-                    status = "You do not have sufficent funds to cover this transaction."
-                    context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
+                    status = "failed_funds"
+                context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
                     
             
             
     #############################SELL######################################################################################
-        elif 'sell' in request.POST:
-            return HttpResponse(request.POST["ticker"])
+        elif 'sell' in request.POST and json_response:
+            extracted = json_response[0]
+            stockname = extracted["symbol"]
+            userinformation = User.objects.filter(name="Edgar Santana")
+            stocks = Stock.objects.filter(ticker=stockname)
+            
+            for user in userinformation:
+                    counter = 0
+                    found = False
+                    counter=0
+                    for stock in stocks:
+                        if stock.quantity > 1 and stock.ticker==stockname:
+                            found = True
+                            stocks[counter].quantity -= 1
+                            stocks[counter].save()
+                            status = "ok_sell"
+                            
+
+                        elif stock.quantity == 1 and stock.ticker == stockname:
+                            found = True
+                            stocks[counter].delete()
+                            
+                            
+                        ++counter
+                    if found:
+                        userinformation[0].balance += extracted["price"]
+                        userinformation[0].save()
+                        status = "ok_found"
+                        
+                    if found == False:
+                        status = "failed_found"
+                        
+                        
+                    
+                    
+            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
     
     
 

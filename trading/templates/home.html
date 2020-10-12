@@ -25,9 +25,14 @@
 
         <img src="{% static "trading/foo.png" %}" alt="My image"/>
     
-        
-    {% else %}
-        Please double check your stock ticker
+    {% endif %}
+    {% if status == 'ok_purch' %}
+        <h3>{{extracted.companyName}} stock succesfuly purchased</h3>
+
+
+    {% endif %}
+    {% if status == 'failed_funds' %}
+    <h3>You do not have sufficent funds please check your balance</h3>
     {% endif %}
 
 {% endif %}
