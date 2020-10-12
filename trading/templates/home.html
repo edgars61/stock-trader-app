@@ -16,6 +16,18 @@
  {% if extracted == "There was an error with your ticker please try again." %}
     Error world
     {% else %}
+    {% block child %}
+    {% include 'addstock.html' %}
+    {% endblock child %}
+    <div class="row container-fluid">
+        {% load static %}
+        <div class="row"
+        <div class="col-12 col-xl-6 container-fluid">
+            <img src="{% static "trading/foo.png" %}" alt="My image"/>
+            
+        </div>
+        </div>
+    
     
     
    
