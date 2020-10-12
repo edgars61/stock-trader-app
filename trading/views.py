@@ -18,6 +18,11 @@ import json
 
 
 def home(request):
+    userinformation = User.objects.values()
+    stocks = Stock.objects.values()
+    context = {'userinformation':userinformation,'stocks':stocks}
+    return render(request,'home.html',context)
+
     if request.method =='POST' and request.POST['ticker']:
         
         ticker = request.POST['ticker']
@@ -59,8 +64,7 @@ def home(request):
             plt.ylabel("$ price")
             plt.title(ticker+ " Stock Price 10/11/15  - 10/11/20")
             plt.savefig("trading/static/trading/foo.png")
-            userinformation = User.objects.values()
-            context = {'extracted':extracted,'userinformation':userinformation}
+            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks}
             return render(request,'home.html',context)
             
             

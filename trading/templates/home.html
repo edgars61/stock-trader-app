@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% include 'userinfo.html' %}
+{% for item in userinformation %}
+<h2>Welcome {{item.name}}</h2>
+<h3>Your available balance is: {{item.balance}}</h3>
+{% endfor %}
+
+
 
 {% if ticker %}
 
@@ -12,7 +17,7 @@
     Error world
     {% else %}
     
-    {{ userinformation }}
+    
    
         
         
