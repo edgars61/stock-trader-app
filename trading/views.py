@@ -14,76 +14,95 @@ import json
 
 
 
-
-
-
 def home(request):
+    #userinformation
     userinformation = User.objects.values()
     stocks = Stock.objects.values()
     context = {'userinformation':userinformation,'stocks':stocks}
-    
-    
-    if request.method =='POST' and request.POST['ticker']:
 
-        
-        ticker = request.POST['ticker']
-        ticker = ticker.replace(" ", "")
-        try:
-            # For Python 3.0 and later
-            from urllib.request import urlopen
-        except ImportError:
-            # Fall back to Python 2's urllib2
-            from urllib2 import urlopen
+    try:
+        # For Python 3.0 and later
+        from urllib.request import urlopen
+    except ImportError:
+        # Fall back to Python 2's urllib2
+        from urllib2 import urlopen
             
-        def get_jsonparsed_data(url):
-            """
-            Receive the content of ``url``, parse it as JSON and return the object.
+    def get_jsonparsed_data(url):
+        """
+        Receive the content of ``url``, parse it as JSON and return the object.
 
-            Parameters
-            ----------
-            url : str
+        Parameters
+        ----------
+        url : str
 
-            Returns
-            -------
-            dict
-            """
-            response = urlopen(url)
-            data = response.read().decode("utf-8")
-            return json.loads(data)
+        Returns
+        -------
+        dict
+        """
+        response = urlopen(url)
+        data = response.read().decode("utf-8")
+        return json.loads(data)
 
-        url = ("https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
+    ######################SEARCH#############################################################################################
+    if request.method =='POST' and 'search' in request.POST :
+        stocksearch = request.POST["ticker"]
+        url = ("https://financialmodelingprep.com/api/v3/profile/"+stocksearch+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
         json_response = get_jsonparsed_data(url)
-        
         if  json_response:
             extracted = json_response[0]
-            ticker = extracted["symbol"]
-            df= get_data(ticker, start_date="10/11/2015", end_date="10/11/2020", index_as_date = True, interval="1wk")
+            stockname = extracted["symbol"]
+            df= get_data(stockname, start_date="10/11/2015", end_date="10/11/2020", index_as_date = True, interval="1wk")
             df['close'].plot()
             plt.figure(figsize=(10,10))
             plt.plot(df.index, df['close'])
             plt.xlabel("date")
             plt.ylabel("$ price")
-            plt.title(ticker+ " Stock Price 10/11/15  - 10/11/20")
+            plt.title(stockname+ " Stock Price 10/11/15  - 10/11/20")
             plt.savefig("trading/static/trading/foo.png")
-            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks}
-            if 'buy' in request.POST:
-                #buy a stock
-                print("hellow rod")
-            elif 'sell' in request.POST:
-                #sell the stock
-                print("no")
-            return render(request,'home.html',context)
-    
-        
+            status = "ok"
+            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
         else:
-            ticker = "There was an error with your ticker please try again."
-            context = {'userinformation':userinformation,'stocks':stocks,'ticker':ticker}
-            #return render(request,'home.html',context)
-            return HttpResponse(checkbalance)
-    else:
-        ticker = "Please enter a stock above"
-        context = {'userinformation':userinformation,'stocks':stocks,'ticker':ticker}
-        return render(request,'home.html',context)
+            status = "failed"
+            context = {userinformation:'userinformation','stocks':stocks,'status':status}
+    ###########################BUY#########################################################################################
+    elif request.method =='POST' and 'sell' in request.POST:
+        S = Stock.objects.all()
+        
+        
+        #search for a ticker and display data
+        print("search for a ticker and display data")
+    #############################SELL######################################################################################
+    elif request.method =='POST' and 'sell' in request.POST:
+        url = ("https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
+        #search for a ticker and display data
+        print("search for a ticker and display data")
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #Will always be returned
+    return render(request,'home.html',context)
+
+
+
+
         
         
     

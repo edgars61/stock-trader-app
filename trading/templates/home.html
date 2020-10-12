@@ -3,42 +3,21 @@
 
 {% for item in userinformation %}
 <h2>Welcome {{item.name}}</h2>
-<h3>Your available balance is: {{item.balance}}</h3>
+<h3>Your balance is {{item.balance}}</h3>
 {% endfor %}
 
 
-
-{% if ticker %}
-
-{% endif %}
-
-{% if extracted %}
- {% if extracted == "There was an error with your ticker please try again." %}
-    Error world
-    {% else %}
-    {% block child %}
-    {% endblock child %}
-    <div class="row container-fluid">
+{% if status %}
+    {% if status == 'ok' %}
         {% load static %}
-        <div class="row"
-        <div class="col-12 col-xl-6 container-fluid">
-            <img src="{% static "trading/foo.png" %}" alt="My image"/>
-            
-        </div>
-        </div>
-        <form action= {% url 'addstock' %} class="form-inline my-2 my-lg-0" method = "POST">
-            {% csrf_token %}
-            <input class="form-control mr-sm-2" type="search" placeholder="Enter stock you would like to purchase" aria-label="Purchase" name="ticker">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="add" >Stock Quote</button>
-          </form>
-    
-    
-    
-   
-        
-        
+        <img src="{% static "trading/foo.png" %}" alt="My image"/>
+    {% else %}
+        <h2>There was an error with your ticker please try again</h2>
     {% endif %}
+
 {% endif %}
+
+
       
   
 
