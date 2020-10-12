@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div class="row">
+<div class ="container-fluid col-xl-6">
 {% for item in userinformation %}
 <h2>Welcome {{item.name}}</h2>
 <h3>Your balance is {{item.balance}}</h3>
@@ -8,23 +9,27 @@
 
 <form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
     {% csrf_token %}
-    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stock" aria-label="Search" name="ticker">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stok to sell" aria-label="Search" name="ticker">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="sell">Sell</button>
 </form>
 <form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
     {% csrf_token %}
-    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stock" aria-label="Search" name="ticker">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="buy">Buy a stock</button>
+    <input class="form-control mr-sm-2" type="search" placeholder="Enter stock to buy" aria-label="Search" name="ticker">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="buy">Purchase</button>
 </form>
-
-
+</div>
 
 {% if status %}
     {% if status == 'ok' %}
         {% load static %}
+        <div class ="container-fluid col-xl-6 col-lg-6">
 
-        <img src="{% static "trading/foo.png" %}" alt="My image"/>
-    
+            <div class="row">
+                {% load static %}
+            <img class src="{% static "trading/foo.png" %}" alt="My image"/>
+           
+        </div>
+        </div>
     {% endif %}
     {% if status == 'ok_purch' %}
         <h3>{{extracted.companyName}} stock succesfuly purchased</h3>
@@ -36,6 +41,12 @@
     {% endif %}
 
 {% endif %}
+
+
+</div>
+
+
+
 
 
       
