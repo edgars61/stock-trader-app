@@ -13,6 +13,7 @@ class User(models.Model):
 
 class Stock(models.Model):
     ticker = models.CharField(max_length=10)
+    quantity = models.IntegerField()
     def __str__(self):
         return self.ticker
 

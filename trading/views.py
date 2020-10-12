@@ -43,14 +43,20 @@ def home(request):
         data = response.read().decode("utf-8")
         return json.loads(data)
 
-    ######################SEARCH#############################################################################################
-    if request.method =='POST' and 'search' in request.POST :
+   
+    if request.method =='POST':
         stocksearch = request.POST["ticker"]
         url = ("https://financialmodelingprep.com/api/v3/profile/"+stocksearch+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
         json_response = get_jsonparsed_data(url)
         if  json_response:
             extracted = json_response[0]
             stockname = extracted["symbol"]
+        else:
+            status = 'failed'
+            context = {userinformation:'userinformation','stocks':stocks,'status':status}
+        
+######################SEARCH#############################################################################################
+        if 'search' in request.POST and json_response:
             df= get_data(stockname, start_date="10/11/2015", end_date="10/11/2020", index_as_date = True, interval="1wk")
             df['close'].plot()
             plt.figure(figsize=(10,10))
@@ -60,22 +66,18 @@ def home(request):
             plt.title(stockname+ " Stock Price 10/11/15  - 10/11/20")
             plt.savefig("trading/static/trading/foo.png")
             status = "ok"
-            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
-        else:
-            status = "failed"
-            context = {userinformation:'userinformation','stocks':stocks,'status':status}
-    ###########################BUY#########################################################################################
-    elif request.method =='POST' and 'sell' in request.POST:
-        S = Stock.objects.all()
-        
-        
-        #search for a ticker and display data
-        print("search for a ticker and display data")
+            context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}        
+###########################BUY#########################################################################################
+        elif 'buy' in request.POST and json_response:
+            extracted = json_response[0]
+            stockname = extracted["symbol"]
+            n = Stock(ticker = stockname,quantity=1)
+            n.save()
+            return HttpResponse(n)
+            
     #############################SELL######################################################################################
-    elif request.method =='POST' and 'sell' in request.POST:
-        url = ("https://financialmodelingprep.com/api/v3/profile/"+ticker+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
-        #search for a ticker and display data
-        print("search for a ticker and display data")
+        elif 'sell' in request.POST:
+            return HttpResponse(request.POST["ticker"])
     
     
 
@@ -133,3 +135,8 @@ def userinfo(request):
 
 def addstock(request):
     return render(request,'addstock.html',{})
+
+
+
+
+    

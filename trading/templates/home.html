@@ -6,13 +6,30 @@
 <h3>Your balance is {{item.balance}}</h3>
 {% endfor %}
 
+<form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
+    {% csrf_token %}
+    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stock" aria-label="Search" name="ticker">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="sell">Sell</button>
+</form>
+<form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
+    {% csrf_token %}
+    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stock" aria-label="Search" name="ticker">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="buy">Buy a stock</button>
+</form>
+
+
 
 {% if status %}
     {% if status == 'ok' %}
         {% load static %}
+    
+
+
+
         <img src="{% static "trading/foo.png" %}" alt="My image"/>
+        
     {% else %}
-        <h2>There was an error with your ticker please try again</h2>
+        <h2>{{status}}</h2>
     {% endif %}
 
 {% endif %}
