@@ -1,24 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% include 'userinfo.html' %}
+
 {% if ticker %}
-    <h1>{{ticker}}</h1>
+
 {% endif %}
 
 {% if extracted %}
  {% if extracted == "There was an error with your ticker please try again." %}
     Error world
     {% else %}
-    <div class="row container-fluid">
-        {% load static %}
-        <div class="row"
-        <div class="col-12 col-xl-6 container-fluid">
-            <img src="{% static "trading/foo.png" %}" alt="My image"/>
-        </div>
-        <div class="col-12 col-xl-6 image container-fluid">
-        <p class="col-xl-6 col-12">{{extracted.price}}</p>
-        </div>
-        </div>
+    
+    {{ userinformation }}
+   
+        
+        
     {% endif %}
 {% endif %}
       

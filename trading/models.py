@@ -8,11 +8,13 @@ class User(models.Model):
     transactions = models.ManyToManyField('Transaction',blank=True)
     stocks = models.ManyToManyField('Stock',blank=True)
     pf_value = models.ManyToManyField('PF_Value_Daily',blank = True)
-    def __self__(self):
-       return self.name
+    def __str__(self):
+        return self.name
 
 class Stock(models.Model):
     ticker = models.CharField(max_length=10)
+    def __str__(self):
+        return self.ticker
 
 class Transaction(models.Model):
     TRANSACTION_CHOICES =[('P','Purchase'),('S','Sell')]

@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.template import Context, Template
 from django.http import HttpResponse
+from .models import User, Stock, Transaction, PF_Value_Daily
 #plotting
 import pandas as pd
 from datetime import datetime
@@ -57,7 +59,9 @@ def home(request):
             plt.ylabel("$ price")
             plt.title(ticker+ " Stock Price 10/11/15  - 10/11/20")
             plt.savefig("trading/static/trading/foo.png")
-            return render(request,'home.html',{'extracted':extracted})
+            userinformation = User.objects.values()
+            context = {'extracted':extracted,'userinformation':userinformation}
+            return render(request,'home.html',context)
             
             
             
@@ -77,7 +81,15 @@ def home(request):
 
 
     
-    
 def about(request):
-    return render(request,'about.html',{})
+    uname = User.objects.values()
+    return render(request,'about.html',{'uname':uname})
     
+
+
+
+  
+def userinfo(request):
+    aml_videos = Stock.objects.all()
+    context = {'aml_videos': aml_videos}
+    return render(request, "userinfo.html", context)
