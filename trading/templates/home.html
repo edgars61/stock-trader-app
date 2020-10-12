@@ -22,14 +22,12 @@
 {% if status %}
     {% if status == 'ok' %}
         {% load static %}
-    
-
-
 
         <img src="{% static "trading/foo.png" %}" alt="My image"/>
+    
         
     {% else %}
-        <h2>{{status}}</h2>
+        Please double check your stock ticker
     {% endif %}
 
 {% endif %}

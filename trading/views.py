@@ -53,7 +53,7 @@ def home(request):
             stockname = extracted["symbol"]
         else:
             status = 'failed'
-            context = {userinformation:'userinformation','stocks':stocks,'status':status}
+            context = {'userinformation':userinformation,'stocks':stocks,'status':status}
         
 ######################SEARCH#############################################################################################
         if 'search' in request.POST and json_response:
@@ -73,10 +73,6 @@ def home(request):
             stockname = extracted["symbol"]
             userinformation = User.objects.filter(name="Edgar Santana")
             stocks = Stock.objects.filter(ticker=stockname)
-            
-           
-            
-
             for user in userinformation:
                 if user.balance >= extracted["price"]:
                     counter = 0
@@ -85,27 +81,22 @@ def home(request):
                     for stock in stocks:
                         if stock.quantity > 0 and stock.ticker==stockname:
                             found = True
-                            
-                            
-                        
                         else:
                             found = False
-                            
                         ++counter
                     if found:
                         stocks[counter].quantity += 1
                         stocks[counter].save()
-                        return HttpResponse("YAA")
+                        status = "Stock succesfully purchased"
                     if found == False:
                         n = Stock(ticker = stockname,quantity=1)
                         n.save()
-                        return HttpResponse("NAAA")
-
-
-                        
+                        status = "Stock successfuly purchased"
                     userinformation[0].balance -= extracted["price"]
                     userinformation[0].save()
-                    
+                else:
+                    status = "You do not have sufficent funds to cover this transaction."
+                    context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
                     
             
             
