@@ -71,9 +71,43 @@ def home(request):
         elif 'buy' in request.POST and json_response:
             extracted = json_response[0]
             stockname = extracted["symbol"]
-            n = Stock(ticker = stockname,quantity=1)
-            n.save()
-            return HttpResponse(n)
+            userinformation = User.objects.filter(name="Edgar Santana")
+            stocks = Stock.objects.filter(ticker=stockname)
+            
+           
+            
+
+            for user in userinformation:
+                if user.balance >= extracted["price"]:
+                    counter = 0
+                    found = False
+                    counter=0
+                    for stock in stocks:
+                        if stock.quantity > 0 and stock.ticker==stockname:
+                            found = True
+                            
+                            
+                        
+                        else:
+                            found = False
+                            
+                        ++counter
+                    if found:
+                        stocks[counter].quantity += 1
+                        stocks[counter].save()
+                        return HttpResponse("YAA")
+                    if found == False:
+                        n = Stock(ticker = stockname,quantity=1)
+                        n.save()
+                        return HttpResponse("NAAA")
+
+
+                        
+                    userinformation[0].balance -= extracted["price"]
+                    userinformation[0].save()
+                    
+                    
+            
             
     #############################SELL######################################################################################
         elif 'sell' in request.POST:
