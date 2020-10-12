@@ -17,6 +17,31 @@
     <input class="form-control mr-sm-2" type="search" placeholder="Enter stock to buy" aria-label="Search" name="ticker">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="buy">Purchase</button>
 </form>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Stock</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Value</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+    {% for stock in stocks %}
+      <tr>
+        <th scope="row">{{stock.ticker}}</th>
+        <td>{{stock.quantity}}</td>
+        <td>{{stock.value}}</td>
+      
+      </tr>
+      {% endfor %}
+   
+      
+    </tbody>
+  </table>
+  
+
 </div>
 
 {% if status %}

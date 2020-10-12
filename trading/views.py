@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.template import Context, Template
 from django.http import HttpResponse
 from .models import User, Stock, Transaction, PF_Value_Daily
+from datetime import date
+
+
 #plotting
 import pandas as pd
 from datetime import datetime
@@ -15,11 +18,6 @@ import json
 
 
 def home(request):
-    #userinformation
-    userinformation = User.objects.values()
-    stocks = Stock.objects.values()
-    context = {'userinformation':userinformation,'stocks':stocks}
-
     try:
         # For Python 3.0 and later
         from urllib.request import urlopen
@@ -43,6 +41,23 @@ def home(request):
         data = response.read().decode("utf-8")
         return json.loads(data)
 
+    #userinformation
+    userinformation = User.objects.values()
+    stocks = Stock.objects.all()
+    context = {'userinformation':userinformation,'stocks':stocks}
+    counter = 0
+    for stock in stocks:
+        url = ("https://financialmodelingprep.com/api/v3/profile/"+stock.ticker+"?apikey=07eb8824ce1236dcbba7f02dca51447f")
+        json_response = get_jsonparsed_data(url)
+        extracted = json_response[0]
+        stockprice = extracted["price"]
+        stocks[counter].value =stockprice
+        stocks[counter].save()
+        ++counter
+
+
+
+    context = {'userinformation':userinformation,'stocks':stocks}
    
     if request.method =='POST':
         stocksearch = request.POST["ticker"]
@@ -57,13 +72,16 @@ def home(request):
         
 ######################SEARCH#############################################################################################
         if 'search' in request.POST and json_response:
-            df= get_data(stockname, start_date="10/11/2015", end_date="10/11/2020", index_as_date = True, interval="1wk")
+            today = date.today()
+            d3 = today.strftime("%m/%d/%y")
+            print("Today's date:", today)
+            df= get_data(stockname, start_date="01/01/2015", end_date=d3, index_as_date = True, interval="1wk")
             df['close'].plot()
             plt.figure(figsize=(10,10))
             plt.plot(df.index, df['close'])
             plt.xlabel("date")
             plt.ylabel("$ price")
-            plt.title(stockname+ " Stock Price 10/11/15  - 10/11/20")
+            plt.title(stockname+ " Stock Price 2015  - 2020")
             plt.savefig("trading/static/trading/foo.png")
             status = "ok"
             context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}        
@@ -71,31 +89,33 @@ def home(request):
         elif 'buy' in request.POST and json_response:
             extracted = json_response[0]
             stockname = extracted["symbol"]
+            stockliveprice =extracted["price"]
             userinformation = User.objects.filter(name="Edgar Santana")
-            stocks = Stock.objects.filter(ticker=stockname)
+            mystocks = Stock.objects.filter(ticker=stockname)
             for user in userinformation:
                 if user.balance >= extracted["price"]:
                     counter = 0
                     found = False
                     counter=0
-                    for stock in stocks:
+                    for stock in mystocks:
                         if stock.quantity > 0 and stock.ticker==stockname:
                             found = True
                         else:
                             found = False
                         ++counter
                     if found:
-                        stocks[counter].quantity += 1
-                        stocks[counter].save()
+                        mystocks[counter].quantity += 1
+                        mystocks[counter].save()
                         status = "ok_purch"
                     if found == False:
-                        n = Stock(ticker = stockname,quantity=1)
+                        n = Stock(ticker = stockname,quantity=1,value=stockliveprice)
                         n.save()
                         status = "ok_purch"
                     userinformation[0].balance -= extracted["price"]
                     userinformation[0].save()
                 else:
                     status = "failed_funds"
+                stocks = stocks = Stock.objects.all()
                 context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
                     
             
@@ -134,8 +154,7 @@ def home(request):
                         status = "failed_found"
                         
                         
-                    
-                    
+            stocks = Stock.objects.all()
             context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
     
     

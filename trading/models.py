@@ -14,6 +14,7 @@ class User(models.Model):
 class Stock(models.Model):
     ticker = models.CharField(max_length=10)
     quantity = models.IntegerField()
+    value = models.FloatField(default=0.0)
     def __str__(self):
         return self.ticker
 
