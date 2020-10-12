@@ -9,12 +9,12 @@
 
 <form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
     {% csrf_token %}
-    <input class="form-control mr-sm-2" type="search" placeholder="Search for a stok to sell" aria-label="Search" name="ticker">
+    <input class="form-control mr-sm-2" type="search" placeholder="Enter ticker to sell" aria-label="Search" name="ticker">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="sell">Sell</button>
 </form>
 <form action= {% url 'home' %} class="form-inline my-2 my-lg-0" method = "POST">
     {% csrf_token %}
-    <input class="form-control mr-sm-2" type="search" placeholder="Enter stock to buy" aria-label="Search" name="ticker">
+    <input class="form-control mr-sm-2" type="search" placeholder="Enter ticker to buy" aria-label="Search" name="ticker">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="buy">Purchase</button>
 </form>
 
@@ -28,6 +28,7 @@
       </tr>
     </thead>
     <tbody>
+    
     {% for stock in stocks %}
       <tr>
         <th scope="row">{{stock.ticker}}</th>
@@ -44,9 +45,12 @@
 
 </div>
 
+
+
+
 {% if status %}
-    {% if status == 'ok' %}
-        {% load static %}
+    <br>
+    {% if status == 'search' %}
         <div class ="container-fluid col-xl-6 col-lg-6">
 
             <div class="row">
@@ -55,18 +59,15 @@
            
         </div>
         </div>
+        <br>
+    {% elif status == 'search_failed' %}
+    <br>
+    <div class="row col-lg-12 col-xl-12 messagebox">
+        <h4>The search failed please enter a valid ticker and try again</h4>
+    </div>
+    
     {% endif %}
-    {% if status == 'ok_purch' %}
-        <h3>{{extracted.companyName}} stock succesfuly purchased</h3>
-
-
-    {% endif %}
-    {% if status == 'failed_funds' %}
-    <h3>You do not have sufficent funds please check your balance</h3>
-    {% endif %}
-
 {% endif %}
-
 
 </div>
 

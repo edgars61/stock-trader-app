@@ -67,7 +67,8 @@ def home(request):
             extracted = json_response[0]
             stockname = extracted["symbol"]
         else:
-            status = 'failed'
+            status = 'search_failed'
+            
             context = {'userinformation':userinformation,'stocks':stocks,'status':status}
         
 ######################SEARCH#############################################################################################
@@ -83,7 +84,7 @@ def home(request):
             plt.ylabel("$ price")
             plt.title(stockname+ " Stock Price 2015  - 2020")
             plt.savefig("trading/static/trading/foo.png")
-            status = "ok"
+            status = "search"
             context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}        
 ###########################BUY#########################################################################################
         elif 'buy' in request.POST and json_response:
@@ -106,15 +107,15 @@ def home(request):
                     if found:
                         mystocks[counter].quantity += 1
                         mystocks[counter].save()
-                        status = "ok_purch"
+                        status = "buy"
                     if found == False:
                         n = Stock(ticker = stockname,quantity=1,value=stockliveprice)
                         n.save()
-                        status = "ok_purch"
+                        status = "buy"
                     userinformation[0].balance -= extracted["price"]
                     userinformation[0].save()
                 else:
-                    status = "failed_funds"
+                    status = "buy_failed"
                 stocks = stocks = Stock.objects.all()
                 context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
                     
@@ -136,7 +137,7 @@ def home(request):
                             found = True
                             stocks[counter].quantity -= 1
                             stocks[counter].save()
-                            status = "ok_sell"
+                            status = "sell"
                             
 
                         elif stock.quantity == 1 and stock.ticker == stockname:
@@ -148,10 +149,10 @@ def home(request):
                     if found:
                         userinformation[0].balance += extracted["price"]
                         userinformation[0].save()
-                        status = "ok_found"
+                        status = "sell"
                         
                     if found == False:
-                        status = "failed_found"
+                        status = "sell_failed"
                         
                         
             stocks = Stock.objects.all()
