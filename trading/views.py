@@ -133,8 +133,12 @@ def home(request):
         elif 'sell' in request.POST and json_response:
             extracted = json_response[0]
             stockname = extracted["symbol"]
+            stockliveprice =extracted["price"]
             userinformation = User.objects.filter(name="Edgar Santana")
             stocks = Stock.objects.filter(ticker=stockname)
+            today = date.today().strftime('%Y-%m-%d')
+            
+            
             
             for user in userinformation:
                     counter = 0
@@ -146,6 +150,8 @@ def home(request):
                             stocks[counter].quantity -= 1
                             stocks[counter].save()
                             status = "sell"
+                            t = Transaction(transaction_type='S',transaction_value=stockliveprice,stock_sold=stockname,date=today)
+                            t.save()
                             
 
                         elif stock.quantity == 1 and stock.ticker == stockname:
@@ -158,6 +164,8 @@ def home(request):
                         userinformation[0].balance += extracted["price"]
                         userinformation[0].save()
                         status = "sell"
+                        t = Transaction(transaction_type='S',transaction_value=stockliveprice,stock_sold=stockname,date=today)
+                        t.save()
                         
                     if found == False:
                         status = "sell_failed"

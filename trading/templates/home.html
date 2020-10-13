@@ -49,25 +49,37 @@
 
 
 {% if status %}
+    {% if status == 'search' %}
     <br>    
     <div class ="container-fluid col-xl-6 col-lg-6">
 
         <div class="row">
             {% load static %}
             <img src="{% static "trading/stock.png" %}"  alt="My image"/>
-       
+    
     </div>
+    </div>
+    {% endif %}
+    {% if status == 'sell' %}
+    <br>
+    <div class="row col-lg-12 col-xl-12 messagebox">
+        <h4>Stock succesfuly sold</h4>
     </div>
 
     
         
     <br>
+    {% endif %}
     {% if status == 'search_failed' %}
     <br>
     <div class="row col-lg-12 col-xl-12 messagebox">
         <h4>The search failed please enter a valid ticker and try again</h4>
     </div>
-    
+    {% elif status == 'sell_failed' %}
+    <div class="row col-lg-12 col-xl-12 messagebox">
+        <h4>The purchase failed please enter a valid ticker and make sure you have sufficent funds then try again</h4>
+    </div>
+ 
     {% endif %}
 {% endif %}
 
