@@ -49,17 +49,19 @@
 
 
 {% if status %}
-    <br>
-    
-        <div class ="container-fluid col-xl-6 col-lg-6">
+    <br>    
+    <div class ="container-fluid col-xl-6 col-lg-6">
 
-            <div class="row">
-                {% load static %}
-            <img class src="{% static "trading/foo.png" %}" alt="My image"/>
-           
-        </div>
-        </div>
-        <br>
+        <div class="row">
+            {% load static %}
+            <img src="{% static "trading/stock.png" %}"  alt="My image"/>
+       
+    </div>
+    </div>
+
+    
+        
+    <br>
     {% if status == 'search_failed' %}
     <br>
     <div class="row col-lg-12 col-xl-12 messagebox">

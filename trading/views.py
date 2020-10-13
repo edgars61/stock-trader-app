@@ -77,14 +77,13 @@ def home(request):
             d3 = today.strftime("%m/%d/%y")
             print("Today's date:", today)
             df= get_data(stockname, start_date="01/01/2015", end_date=d3, index_as_date = True, interval="1wk")
-            return HttpResponse(df)
             df['close'].plot()
             plt.figure(figsize=(10,10))
             plt.plot(df.index, df['close'])
             plt.xlabel("date")
             plt.ylabel("$ price")
             plt.title(stockname+ " Stock Price 2015  - 2020")
-            plt.savefig("trading/static/trading/foo.png")
+            plt.savefig("trading/static/trading/stock.png")
             status = "search"
             context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}        
 ###########################BUY#########################################################################################

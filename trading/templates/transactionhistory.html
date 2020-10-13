@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+<div class ="container-fluid">
+<div class="row">
+<table class="table table-striped col-xl-6">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Stock</th>
+        <th scope="col">Transaction Type</th>
+        <th scope="col">Transaction Value</th>
+        <th scopt="col">Date</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+    
+    {% for transaction in transactionrecords %}
+      <tr>
+        <th scope="row">{{transaction.stock_sold}}</th>
+        <td>{{transaction.transaction_type}}</td>
+        <td>{{transaction.transaction_value}}</td>
+        <td>{{transaction.date}}</td>
+      
+      </tr>
+      {% endfor %}
+
+      
+        
+   
+      
+    </tbody>
+  </table>
+  {% load static %}
+        <div class="col-xl-6">
+        <img class = 'transactions' src="{% static "trading/transaction.png" %}" alt="My image"/>
+        </div>
+</div>
+</div>
+
+  {% endblock %}
