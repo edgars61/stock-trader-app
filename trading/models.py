@@ -23,9 +23,9 @@ class Transaction(models.Model):
     transaction_type = models.CharField(max_length=1, choices=TRANSACTION_CHOICES)
     transaction_value = models.FloatField(default=0.0)
     stock_sold = models.CharField(max_length=10)
-    date = models.DateTimeField() 
+    date = models.DateField()
     
 
 class PF_Value_Daily(models.Model):
     value = models.FloatField(default=0.0)
-    date_ending = models.DateTimeField()
+    date_ending = models.DateField()

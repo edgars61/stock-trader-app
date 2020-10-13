@@ -50,7 +50,7 @@
 
 {% if status %}
     <br>
-    {% if status == 'search' %}
+    
         <div class ="container-fluid col-xl-6 col-lg-6">
 
             <div class="row">
@@ -60,7 +60,7 @@
         </div>
         </div>
         <br>
-    {% elif status == 'search_failed' %}
+    {% if status == 'search_failed' %}
     <br>
     <div class="row col-lg-12 col-xl-12 messagebox">
         <h4>The search failed please enter a valid ticker and try again</h4>

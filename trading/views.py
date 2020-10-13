@@ -77,6 +77,7 @@ def home(request):
             d3 = today.strftime("%m/%d/%y")
             print("Today's date:", today)
             df= get_data(stockname, start_date="01/01/2015", end_date=d3, index_as_date = True, interval="1wk")
+            return HttpResponse(df)
             df['close'].plot()
             plt.figure(figsize=(10,10))
             plt.plot(df.index, df['close'])
@@ -93,6 +94,9 @@ def home(request):
             stockliveprice =extracted["price"]
             userinformation = User.objects.filter(name="Edgar Santana")
             mystocks = Stock.objects.filter(ticker=stockname)
+            today = date.today().strftime('%Y-%m-%d')
+            
+
             for user in userinformation:
                 if user.balance >= extracted["price"]:
                     counter = 0
@@ -108,15 +112,20 @@ def home(request):
                         mystocks[counter].quantity += 1
                         mystocks[counter].save()
                         status = "buy"
+                        t = Transaction(transaction_type='P',transaction_value=stockliveprice,stock_sold=stockname,date=today)
+                        t.save()
                     if found == False:
                         n = Stock(ticker = stockname,quantity=1,value=stockliveprice)
                         n.save()
                         status = "buy"
                     userinformation[0].balance -= extracted["price"]
                     userinformation[0].save()
+                    t = Transaction(transaction_type='P',transaction_value=stockliveprice,stock_sold=stockname,date=today)
+                    t.save()
                 else:
                     status = "buy_failed"
                 stocks = stocks = Stock.objects.all()
+                
                 context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
                     
             
@@ -157,21 +166,6 @@ def home(request):
                         
             stocks = Stock.objects.all()
             context = {'extracted':extracted,'userinformation':userinformation,'stocks':stocks,'status':status}
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -190,7 +184,24 @@ def home(request):
        
     
         
-        
+def transactionhistory(request):
+    transactionrecords = Transaction.objects.all()
+    values = PF_Value_Daily.objects.all()
+    graphv = {}
+    
+    for dates in values:
+        graphv[dates.date_ending] = dates.value
+        date = dates.value
+    
+    plt.bar(range(len(graphv)), list(graphv.values()), align='center')
+    plt.xticks(range(len(graphv)))
+    # # for python 2.x:
+    # plt.bar(range(len(D)), D.values(), align='center')  # python 2.x
+    # plt.xticks(range(len(D)), D.keys())  # in python 2.x
+
+    plt.savefig("trading/static/trading/transaction.png")
+
+    return render(request,'transactionhistory.html',{'transactionrecords':transactionrecords})
     
 
 

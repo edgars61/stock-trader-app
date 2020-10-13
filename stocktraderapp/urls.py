@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('',views.about, name='about'),
     path('',views.userinfo, name='userinfo'),
-    path('addstock/',views.addstock, name='addstock')
+    path('addstock/',views.addstock, name='addstock'),
+    path('transactionhistory',views.transactionhistory,name='transactionhistory')
 ]
