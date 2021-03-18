@@ -3,7 +3,7 @@
 [![Made with Pthon](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 
-![Dashboard screenshot](https://github.com/BrianRuizy/covid19-dashboard/blob/master/core/static/assets/img/covid-19-mockup-min.png)
+![application screenshot](https://i.imgur.com/Uu9lNeB.png)
 
 ## About
 
