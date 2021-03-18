@@ -22,7 +22,7 @@
 ### Installation
 
 
-1. Create a personal [Fork](https://github.com/login?return_to=%2FBrianRuizy%2Fcovid19-dashboard) of this repository.
+1. Create a personal [Fork](https://github.com/edgars61/stock-trader-app) of this repository.
 
 2. **Clone** the fork with HTTPS, using your local terminal to a preferred location, and **cd** into the project.
 
