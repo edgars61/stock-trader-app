@@ -66,10 +66,13 @@ pip install -r requirements.txt
 ```bash
 python manage.py runserver
 
-May 06, 2020 - 11:22:23
-Django version 3.0.6, using settings 'core.settings'
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 18, 2021 - 14:48:05
+Django version 3.1.5, using settings 'stocktraderapp.settings'
 Starting development server at http://127.0.0.1:8000/
-Quit the server with CONTROL-C.
+Quit the server with CTRL-BREAK.
 ```
 
 ## Deployment
