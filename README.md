@@ -43,7 +43,7 @@ Receiving objects: 100% (337/337), 568.77 KiB | 2.96 MiB/s, done.
 Resolving deltas: 100% (184/184), done.
 
 
-cd covid19-dashboard/
+cd stock-trader-app/
 ```
 
 3. Create your virtual environment, and activate it.
